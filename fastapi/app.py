@@ -20,6 +20,15 @@ app = FastAPI(
 class PredictionFeatures(BaseModel):
     Id: Union[int, float]
 
+
+@app.get("/", tags=["Introduction Endpoints"])
+async def index():
+    """
+    Simply returns a welcome message!
+    """
+    message = "Hello this is my scoring project app. If you want to learn more, check out documentation of the api at `/docs`"
+    return message
+
 @app.post("/predict", tags=["Machine-Learning"])
 async def predict(predictionFeatures: PredictionFeatures):
     """
@@ -34,10 +43,6 @@ async def predict(predictionFeatures: PredictionFeatures):
     df = pd.read_csv("data.csv")
     df.drop('Unnamed: 0',axis=1,inplace=True)
     df.set_index('SK_ID_CURR' ,inplace=True)
-    print("*"*50)
-    print("test amine")
-    print(str(dict(predictionFeatures)['Id']))
-    print(type(dict(predictionFeatures)['Id']))
     df = df[df.index==dict(predictionFeatures)['Id']]
 
 
