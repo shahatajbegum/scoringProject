@@ -18,9 +18,9 @@ st.set_page_config(
 
 
 ### App
-st.title("Dashboarding for the scoring project 🎨")
+st.title("Dashboard for the scoring project 🎨")
 
-st.markdown(""" Welcome to the dashboard for the scoring project 👇
+st.markdown(""" Welcome to the DASHBOARD for the scoring project 👇
 """)
 
 st.markdown("---")
