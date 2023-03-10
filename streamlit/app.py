@@ -76,10 +76,36 @@ with st.form("score_client"):
         data_client =  data[data.index==id]
         st.subheader(" Here are some caracteristics of the client {}".format(id))
         st.markdown("The number of children of the client is **{}** \n and the total income is **{}$**".format(data_client["CNT_CHILDREN"].values[0],int(data_client["AMT_INCOME_TOTAL"].values[0])))
-        st.sidebar.markdown('Cette section permet de comparer les informations descriptives relatives à un client à l’ensemble des clients ou à un groupe de clients similaires.')
-        feature_to_compare = st.sidebar.selectbox('Quelle caractéristique souhaitez vous comparer', liste_features)
+        # st.sidebar.markdown('Cette section permet de comparer les informations descriptives relatives à un client à l’ensemble des clients ou à un groupe de clients similaires.')
+        # feature_to_compare = st.sidebar.selectbox('Quelle caractéristique souhaitez vous comparer', liste_features)
         st.markdown("""In comparison the average income is **{}$**""".format(int(data["AMT_INCOME_TOTAL"].mean())))
 
+        # afficher les distributions des principaux features
+        st.write(" **distribution d'age :**")
+        # 
 
+        data_age = data["DAYS_BIRTH"].values / -365
+        fig, ax = plt.subplots()
+        sns.histplot(data_age, edgecolor='k', color="goldenrod", bins=20)
+        ax.axvline(int(data_client["DAYS_BIRTH"].values / -365), color="green", linestyle='--')
+        ax.set(title='Age du client', xlabel='Age(année)', ylabel='')
+        st.pyplot(fig)
 
+    # 
+        # afficher les distributions des principaux features
+        st.write(" **distribution des revenus :**")
+        data_revenu = data
+        fig, ax = plt.subplots()
+        sns.histplot(data_revenu["AMT_INCOME_TOTAL"], edgecolor='k', color="goldenrod", bins=10)
+        ax.axvline(int(data_client["AMT_INCOME_TOTAL"].values), color="green", linestyle='--')
+        ax.set(title='Revenues des clients', xlabel='Revenues (USD)', ylabel='')
+        st.pyplot(fig)
 
+    # distribution du nombre d'enfants
+        st.write(" **distribution du nombre d'enfants :**")
+        data_children = data
+        fig, ax = plt.subplots()
+        sns.histplot(data_children["CNT_CHILDREN"], edgecolor='k', color="goldenrod", bins=20)
+        ax.axvline(int(data_client["CNT_CHILDREN"].values), color="green", linestyle='--')
+        ax.set(title="Nombre d'enfants des clients", xlabel="Nombre d'enfants", ylabel='')
+        st.pyplot(fig)
