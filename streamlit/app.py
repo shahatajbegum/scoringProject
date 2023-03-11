@@ -44,12 +44,8 @@ def grant_credit(x):
 
 data_load_state = st.text('Loading data...')
 data = load_data(None)
-# lgbm_optimise = joblib.load("lgbm.joblib")
-# explainer = shap.Explainer(lgbm_optimise, data)
-# shap_values = explainer(data)
-# print("test shap values")
-# print("*"*50)
-# print(shap_values)
+lgbm_optimise = joblib.load("lgbm.joblib")
+
 
 if st.checkbox('Show raw data'):
     st.subheader('Raw data')
@@ -108,4 +104,14 @@ with st.form("score_client"):
         sns.histplot(data_children["CNT_CHILDREN"], edgecolor='k', color="goldenrod", bins=20)
         ax.axvline(int(data_client["CNT_CHILDREN"].values), color="green", linestyle='--')
         ax.set(title="Nombre d'enfants des clients", xlabel="Nombre d'enfants", ylabel='')
+        st.pyplot(fig)
+    # shap
+        st.write("**Description :** risque de refus pour les données en rouge. Ceux marquées en bleu favorisent l'approbation du crédit.")
+        shap.initjs()
+        X = data_client
+        number = st.slider("Veuillez sélectionner le nombre de features …", 0, 20, 5)
+        explainer = shap.Explainer(lgbm_optimise._final_estimator, data)
+        shap_values = explainer(X)
+        fig, ax = plt.subplots(figsize=(10, 10))
+        shap.plots.bar(shap_values[0], max_display=number)
         st.pyplot(fig)
